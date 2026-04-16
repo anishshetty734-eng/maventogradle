@@ -2,11 +2,13 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven' 
-        gradle 'Gradle'  // Ensure this matches the name configured in Jenkins
-        jdk 'JDK'// Ensure this matches the name configured in Jenkins
+        maven 'Maven'
+        gradle 'Gradle'
+        jdk 'JDK'
     }
+
     stages {
+
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/anishshetty734-eng/maventogradle'
@@ -15,17 +17,20 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'  // Run Maven build
+                dir('mymvntogrdl') {   // ✅ FIX
+                    sh 'mvn clean package'
+                }
             }
         }
 
         stage('migrate') {
             steps {
-                sh 'gradle init --type pom'  // Run unit tests
+                dir('mymvntogrdl') {   // ✅ FIX
+                    sh 'gradle init --type pom'
+                }
             }
         }
 
-        
     }
 
     post {
